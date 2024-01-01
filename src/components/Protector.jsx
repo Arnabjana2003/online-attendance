@@ -4,14 +4,14 @@ import {useNavigate} from 'react-router-dom'
 
 function Protector({children,authentication = true}) {
   const navigate = useNavigate()
-  const authStatus = useSelector(state=>state.auth.status)
+  const auth = useSelector(state=>state.auth)
     useEffect(()=>{
-      if(authentication && !authStatus){
+      if(authentication && !auth.status){
         navigate("/login")
-      }else if(!authentication && authStatus){
-        navigate("/dashboard")
+      }else if(!authentication && auth.status){
+        navigate(`/${auth.authData.department}/dashboard`)
       }
-    },[authStatus])
+    },[auth])
     
   return (
     <div>{children}</div>

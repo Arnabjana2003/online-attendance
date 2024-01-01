@@ -7,7 +7,7 @@ import Logout from "../components/Logout";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Logo from "../components/Logo";
 import { useDispatch, useSelector } from "react-redux";
-import authSevice from "../firebase/authServices";
+import authServices from "../firebase/authServices";
 import { login } from "../store/authSlice";
 
 function Dashboard() {
@@ -18,17 +18,6 @@ function Dashboard() {
   const [option, setOption] = useState(false);
   const [navSlide, setNavSlide] = useState(false);
   const [userName,setUserName] = useState("");
-//   useEffect(()=>{
-//     if(userData.name){
-//       setUserName(userData.name)
-//     }else{
-//       authSevice.getCurrentUser()
-//       .then(data=>{
-//         dispatch(login(data))
-//         setUserName(data.name)
-//       })
-//     }
-//   },[])
 
   const handleClick = (mes) => {
     setOption(mes);
@@ -74,7 +63,7 @@ function Dashboard() {
       <ToastContainer />
       <header className=" flex justify-between p-2 bg-blue-900 shadow-md shadow-indigo-950 text-white text-md sm:text-lg lg:text-xl">
         <Logo />
-        <h5 className=" hidden md:block">{userName}</h5>
+        <h5 className=" hidden md:block">{userData.name || "User"}</h5>
         <p className=" md:hidden" onClick={() => setNavSlide((prev) => !prev)}>
           {!navSlide ? (
             <svg

@@ -11,6 +11,7 @@ import Attendance from "./components/Attendance.jsx";
 import Protector from "./components/Protector.jsx";
 import Dashboard from "./Pages/Dashboard.jsx";
 import Signup from "./components/Signup.jsx";
+import Login from "./components/Login.jsx";
 
 const router = createBrowserRouter([
   {
@@ -28,11 +29,15 @@ const router = createBrowserRouter([
       },
       {
         path: "/:department/dashboard",
-        element: <Protector authentication={false}><Dashboard/></Protector>,
+        element: <Protector authentication={true}><Dashboard/></Protector>,
       },
       {
         path: "/signup",
         element: <Protector authentication={false}><Signup/></Protector>,
+      },
+      {
+        path: "/login",
+        element: <Protector authentication={false}><Login/></Protector>,
       },
     ],
   },

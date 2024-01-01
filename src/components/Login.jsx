@@ -9,7 +9,7 @@ import {login} from "../store/authSlice"
 import { useNavigate } from "react-router-dom";
 import authServices from "../firebase/authServices";
 
-function Signup() {
+function Login() {
   const dispatch = useDispatch()
   const navigate  = useNavigate()
   const [userData, setUserData] = useState({});
@@ -19,34 +19,31 @@ function Signup() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const btn = e.target.btn;
-    const name = e.target.name;
     const email = e.target.email;
     const password = e.target.passcode;
-    const department = e.target.department;
     btn.disabled = true;
-    btn.innerText = "Adding...";
+    btn.innerText = "Logging in...";
     authServices
-      .signup(userData.email, userData.passcode)
+      .login(userData.email, userData.passcode)
       .then((data) => {
-        services.addMember({uid:data.user.uid,name:userData.name,department:userData.department,email:userData.email})
-        .then(()=>{
-          dispatch(login({uid:data.user.uid,name:userData.name,department:userData.department,email:userData.email}))
-          toast("Registration succefull");
-          name.value = "";
-          email.value = "";
-          password.value = "";
-          department.value = "";
+        services.search(["members"],["uid","==",data.user.uid])
+        .then((userData)=>{
+            userData.forEach((user)=>{
+                const authData = user.data()
+            dispatch(login(authData))
+            console.log(authData);
+            email.value = "";
+            password.value = ""
+            })
         })
-        .catch((err)=>{
-          authServices.deleteUser(data.user.uid).then(()=>console.log("user deleted")).catch((err)=>console.log("user deletion err: "),err)
-        })
+        .catch((err)=>alert(err.message))
       })
       .catch((err) => {
         toast(err.message);
       })
       .finally(() => {
         btn.disabled = false;
-        btn.innerText = "Add";
+        btn.innerText = "Login";
       });
   };
   return (
@@ -61,48 +58,12 @@ function Signup() {
             />
           </div>
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-yellow-200">
-            Add new member
+            Login to your account
           </h2>
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" method="POST" onSubmit={handleSubmit}>
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium leading-6 text-yellow-200"
-              >
-                Your name
-              </label>
-              <div className="mt-2">
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  placeholder=" name"
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2 "
-                  onChange={(e) => onCng(e.target)}
-                />
-              </div>
-            </div>
-            <div>
-              <label
-                htmlFor="department"
-                className="block text-sm font-medium leading-6 text-yellow-200"
-              >
-                Your Department
-              </label>
-              <div className="mt-2">
-                
-                <select id="department" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2 " onChange={(e) => onCng(e.target)} name="department" required>
-                    <option value="">Select</option>
-                    <option value="bca">BCA</option>
-                    <option value="math">MATH</option>
-                    <option value="geography">GEOGRAPHY</option>
-                </select>
-              </div>
-            </div>
             <div>
               <label
                 htmlFor="email"
@@ -116,6 +77,7 @@ function Signup() {
                   name="email"
                   type="email"
                   autoComplete="email"
+                  placeholder="email"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2 "
                   onChange={(e) => onCng(e.target)}
@@ -148,7 +110,7 @@ function Signup() {
             </div>
 
             <div>
-              <Button type={"submit"} label={"Signup"} className="w-full" />
+              <Button type={"submit"} label={"Log in"} className="w-full" />
             </div>
           </form>
         </div>
@@ -157,4 +119,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default Login;

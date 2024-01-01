@@ -1,10 +1,10 @@
-import { addDoc, collection,deleteDoc,doc, getDocs } from "firebase/firestore";
+import { addDoc, collection,deleteDoc,doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { db } from "./firebase.config";
 
 class Services{
-    async addMember(department,userData={}){
+    async addMember(userData={}){
         try {
-            return await addDoc(collection(db,`${department}`,`${department} collection`,"members"),userData)
+            return await addDoc(collection(db,"members"),userData)
         } catch (error) {
             throw error
         }
@@ -42,6 +42,14 @@ class Services{
             return await getDocs(collection(db,`${department}`,`${department} collection`,"attendance",year,`${year} attendance list`))
         }catch(error){
             throw error
+        }
+    }
+    async search(collectionRef = [],queryArr=[]){
+        try{
+            const q = query(collection(db,...collectionRef),where(...queryArr))
+            return await getDocs(q)
+        }catch(err){
+            throw err;
         }
     }
 }

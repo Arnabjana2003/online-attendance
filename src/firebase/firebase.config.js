@@ -3,13 +3,13 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDyp0JniViqc1qPm5HgrYlkix1dG9RJ77A",
-  authDomain: "mrc-attendance.firebaseapp.com",
-  projectId: "mrc-attendance",
-  storageBucket: "mrc-attendance.appspot.com",
-  messagingSenderId: "819184352409",
-  appId: "1:819184352409:web:23bf7403911b7635588c08",
-  measurementId: "G-GVH1J6VY72"
+  apiKey: String(import.meta.env.VITE_APIKEY),
+  authDomain: String(import.meta.env.VITE_AUTHDOMAIN),
+  projectId: String(import.meta.env.VITE_PROJECTID),
+  storageBucket: String(import.meta.env.VITE_STORAGEBUCKET),
+  messagingSenderId: String(import.meta.env.VITE_MESSAGINGSENDERID),
+  appId: String(import.meta.env.VITE_APPID),
+  measurementId: String(import.meta.env.VITE_MESUREMENTID)
 };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app)

@@ -1,6 +1,8 @@
-import {  createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut  } from "firebase/auth";
+import {  createUserWithEmailAndPassword, deleteUser, onAuthStateChanged, signInWithEmailAndPassword, signOut  } from "firebase/auth";
 import { auth } from "./firebase.config";
 import services from "./services";
+import { useDispatch } from "react-redux";
+import {login,logout} from '../store/authSlice'
 
 class AuthServices{
     
@@ -19,9 +21,11 @@ class AuthServices{
     async logout(){
         return await signOut(auth)
     }
-    async getCurrentUser(user){
-    //    onAuthStateChanged(auth,user)
-    return auth.currentUser
+    getCurrentUser(fn){
+       onAuthStateChanged(auth,fn)
+    }
+    async deleteUser(uid){
+        return await deleteUser(uid)
     }
 }
 
