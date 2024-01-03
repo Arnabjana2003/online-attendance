@@ -5,13 +5,13 @@ import Button from "./Button";
 import Logo from "./Logo";
 import services from "../firebase/services";
 import { useDispatch } from "react-redux";
-import {login} from "../store/authSlice"
+import { login } from "../store/authSlice";
 import { useNavigate } from "react-router-dom";
 import authServices from "../firebase/authServices";
 
 function Signup() {
-  const dispatch = useDispatch()
-  const navigate  = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [userData, setUserData] = useState({});
   const onCng = (event) => {
     setUserData({ ...userData, [event.name]: event.value });
@@ -25,9 +25,66 @@ function Signup() {
     const department = e.target.department;
     btn.disabled = true;
     btn.innerText = "Adding...";
-    authServices
+
+    services
+      .search([userData.department], ["departmentcode", "!=", "null"])
+      .then((dptcode) => {
+        let dptCode = null;
+        if (dptcode._snapshot.docChanges.length != 0) {
+
+          dptcode.forEach((code) => {
+            dptCode = code.data().departmentcode;
+          });
+          console.log(dptCode);
+
+          if (userData.departmentcode === dptCode) {
+            authServices
+              .signup(userData.email, userData.passcode)
+              .then((data) => {
+                services
+                  .addMember({
+                    uid: data.user.uid,
+                    name: userData.name,
+                    department: userData.department,
+                    email: userData.email,
+                  })
+                  .then(() => {
+                    dispatch(
+                      login({
+                        uid: data.user.uid,
+                        name: userData.name,
+                        department: userData.department,
+                        email: userData.email,
+                      })
+                    );
+                    toast("Registration succefull");
+                    name.value = "";
+                    email.value = "";
+                    password.value = "";
+                    department.value = "";
+                  })
+                  .catch((err) => {
+                    authServices
+                      .deleteUser(data.user.uid)
+                      .then(() => console.log("user deleted"))
+                      .catch((err) => console.log("user deletion err: "), err);
+                  });
+              })
+              .catch((err) => {
+                toast(err.message);
+              })
+              .finally(() => {
+                btn.disabled = false;
+                btn.innerText = "Signup";
+              });
+          }else{
+            toast("Dopartment code is wrong. Enter the correct code")
+          }
+        }else{
+          authServices
       .signup(userData.email, userData.passcode)
       .then((data) => {
+        services.addDocument([userData.department],{departmentcode : userData.departmentcode})
         services.addMember({uid:data.user.uid,name:userData.name,department:userData.department,email:userData.email})
         .then(()=>{
           dispatch(login({uid:data.user.uid,name:userData.name,department:userData.department,email:userData.email}))
@@ -46,8 +103,16 @@ function Signup() {
       })
       .finally(() => {
         btn.disabled = false;
-        btn.innerText = "Add";
+        btn.innerText = "Signup";
       });
+        }
+      })
+      .catch((err) => toast(err.message))
+      .finally(() => {
+        btn.disabled = false;
+        btn.innerText = "Signup";
+      })
+      
   };
   return (
     <>
@@ -61,7 +126,7 @@ function Signup() {
             />
           </div>
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-yellow-200">
-            Add new member
+            Signup
           </h2>
         </div>
 
@@ -84,23 +149,6 @@ function Signup() {
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2 "
                   onChange={(e) => onCng(e.target)}
                 />
-              </div>
-            </div>
-            <div>
-              <label
-                htmlFor="department"
-                className="block text-sm font-medium leading-6 text-yellow-200"
-              >
-                Your Department
-              </label>
-              <div className="mt-2">
-                
-                <select id="department" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2 " onChange={(e) => onCng(e.target)} name="department" required>
-                    <option value="">Select</option>
-                    <option value="bca">BCA</option>
-                    <option value="math">MATH</option>
-                    <option value="geography">GEOGRAPHY</option>
-                </select>
               </div>
             </div>
             <div>
@@ -146,13 +194,58 @@ function Signup() {
                 />
               </div>
             </div>
+            <div>
+              <label
+                htmlFor="department"
+                className="block text-sm font-medium leading-6 text-yellow-200"
+              >
+                Your Department
+              </label>
+              <div className="mt-2">
+                <select
+                  id="department"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2 "
+                  onChange={(e) => onCng(e.target)}
+                  name="department"
+                  required
+                >
+                  <option value="">Select</option>
+                  <option value="bca">BCA</option>
+                  <option value="math">MATH</option>
+                  <option value="geography">GEOGRAPHY</option>
+                </select>
+              </div>
+            </div>
 
+            <div>
+              <div className="flex items-center justify-between">
+                <label
+                  htmlFor="departmentcode"
+                  className="block text-sm font-medium leading-6 text-yellow-200"
+                >
+                  Enter the Department Secret Code
+                </label>
+              </div>
+              <div className="mt-2">
+                <input
+                  id="departmentcode"
+                  name="departmentcode"
+                  type="text"
+                  placeholder="department code"
+                  autoComplete="current-password"
+                  required
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2 "
+                  onChange={(e) => onCng(e.target)}
+                />
+              </div>
+            </div>
             <div>
               <Button type={"submit"} label={"Signup"} className="w-full" />
             </div>
           </form>
         </div>
       </div>
+      <button onClick={handleSubmit}>click</button>
     </>
   );
 }

@@ -52,6 +52,13 @@ class Services{
             throw err;
         }
     }
+    async addDocument(collectionRef=[],data={}){
+        try {
+            return await addDoc(collection(db,...collectionRef),data)
+        } catch (error) {
+            throw error
+        }
+    }
 }
 const services = new Services()
 export default services;

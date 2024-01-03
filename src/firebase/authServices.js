@@ -10,7 +10,7 @@ class AuthServices{
         try {
             return await createUserWithEmailAndPassword(auth, email, passcode)
         } catch (error) {
-            throw error.message
+            throw error
         }
        return null
     }
