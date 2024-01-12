@@ -12,16 +12,21 @@ import Protector from "./components/Protector.jsx";
 import Dashboard from "./Pages/Dashboard.jsx";
 import Signup from "./components/Signup.jsx";
 import Login from "./components/Login.jsx";
+import ManageStudents from "./Pages/Students.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
-      { path: "/", element: <Home /> },
+      { path: "/", element:<Protector authentication={false}><Login/></Protector> },
       {
         path: "/:department/:year/checkattendance",
         element: <CheckAttendance />,
+      },
+      {
+        path: "/home",
+        element: <Home/>,
       },
       {
         path: "/:department/:year/attendance",
@@ -30,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: "/:department/dashboard",
         element: <Protector authentication={true}><Dashboard/></Protector>,
+      },
+      {
+        path: "/:department/:year/students",
+        element: <Protector authentication={true}><ManageStudents/></Protector>,
       },
       {
         path: "/signup",

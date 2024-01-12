@@ -20,7 +20,7 @@ function Home() {
           <Button
             label={"Check Attendance"}
             onClick={() => setOption(true)}
-            className=" mt-3"
+            className=" mt-3 bg-yellow-500 hover:bg-yellow-400 disabled:bg-yellow-200 disabled:text-slate-400"
           />
           <div className=" flex justify-center w-full">
             <div>

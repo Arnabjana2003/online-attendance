@@ -36,14 +36,14 @@ function Dashboard() {
     //   },
     // },
     {
-      label: "Add new students",
+      label: "Manage students",
       icon: <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
       <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
     </svg>
     ,
       onClick: () => {
         setNavSlide((prev) => !prev);
-        handleClick("addstudent");
+        handleClick("manage student");
       },
     },
     {
@@ -54,13 +54,15 @@ function Dashboard() {
     ,
       onClick: () => {
         setNavSlide((prev) => !prev);
-        handleClick("takeattendance");
+        handleClick("take attendance");
       },
     },
   ];
   return (
     <div className=" min-h-screen bg-gradient-to-tl from-slate-200 to-slate-400 text-black">
       <ToastContainer />
+      {option?<YearOptions action={option} display={setOption} propDpt={department}/>:null}
+
       <header className=" flex justify-between p-2 bg-blue-900 shadow-md shadow-indigo-950 text-white text-md sm:text-lg lg:text-xl">
         <Logo />
         <h5 className=" hidden md:block">{userData.name || "User"}</h5>
@@ -104,31 +106,11 @@ function Dashboard() {
           <h4 className=" text-center text-lg sm:text-xl font-semibold">
             Hey {userData.name || "User"}
           </h4>
-          <div className=" flex flex-col items-center justify-center">
-            <p className=" text-lg sm:text-xl">
-              The easiest and fastest way to check your total attendance
-            </p>
-            <Button
-              label={"Check Attendance"}
-              onClick={() => setOption("viewattendance")}
-              className=" mt-3"
-            />
-            <div className="flex justify-center w-full">
-              <div>
-                {option ? (
-                  <YearOptions
-                    display={(val) => setOption(val)}
-                    action={option}
-                    propDpt={department}
-                  />
-                ) : null}
-              </div>
-            </div>
-          </div>
+          
         </main>
 
         <aside
-          className={` fixed ${
+          className={` fixed md:relative ${
             navSlide ? "right-0" : "right-[-300px]"
           } backdrop-blur-md top-12 md:relative md:top-0 md:right-0  border-l p-3 transition-all ease-linear`}
         >

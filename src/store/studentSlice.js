@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    firstyear : [{name:"Arnab",roll:12},{name:"Ankita",roll:123}],
+    firstyear : [],
     secondyear : [],
     thirdyear : [],
     fourthyear : [],
@@ -11,20 +11,33 @@ const studentSlice = createSlice({
     name: "student",
     initialState,
     reducers: {
-        firYr : (state,action)=>{
+        firstyear : (state,action)=>{
             state.firstyear = [...action.payload]
         },
-        secYr : (state,action)=>{
+        secondyear : (state,action)=>{
             state.secondyear = [...action.payload]
         },
-        thrdYr : (state,action)=>{
+        thirdyear : (state,action)=>{
             state.thirdyear = [...action.payload]
         },
-        frthYr : (state,action)=>{
+        fourthyear : (state,action)=>{
             state.fourthyear = [...action.payload]
+        },
+        updateStudent: (state,action)=>{
+            const studentsList = [...state[action.payload.year]]
+            studentsList.forEach((student,index)=>{
+                if(student.id == action.payload.id){
+                    studentsList[index] = action.payload.data
+                }
+            })
+            state[action.payload.year] = studentsList
+        },
+        deleteStudent: (state,action)=>{
+            const studentsList = [...state[action.payload.year]]
+            state[action.payload.year] = studentsList.filter(std=>std.id != action.payload.id)
         }
     }
 })
 
 export default studentSlice.reducer
-export const {firYr,secYr,thrdYr,frthYr} = studentSlice.actions
+export const {firstyear,secondyear,thirdyear,fourthyear,updateStudent,deleteStudent} = studentSlice.actions

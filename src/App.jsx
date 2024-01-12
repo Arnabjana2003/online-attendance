@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 
 function App() {
   console.log("App is running");
-  const [loading,setLaoding] = useState(false)
+  const [loading,setLaoding] = useState(true)
   const dispatch = useDispatch()
   // const getData = async()=>{
   //   setLaoding(true)
@@ -51,7 +51,7 @@ function App() {
     // getData()
   },[]);
   return (
-    <div className=" w-full min-h-screen bg-gradient-to-tl to-blue-900 from-blue-400 text-white">
+    <div className=" max-w-[100vw] min-h-screen bg-gradient-to-tl to-blue-900 from-blue-400 text-white">
       {!loading?<Outlet/>:<Loading/>}
     </div>
   );

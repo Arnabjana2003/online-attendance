@@ -13,9 +13,9 @@ function YearOptions({action,display,propDpt}) {
     const handleClick = ()=>{
         if((action || propDpt) && year && year != "Select"){
             switch(action){
-                case "addstudent": navigate(`/${propDpt}/${year}/add-student`)
+                case "manage student": navigate(`/${propDpt}/${year}/students`)
                 break;
-                case "takeattendance": navigate(`/${propDpt}/${year}/attendance`)
+                case "take attendance": navigate(`/${propDpt}/${year}/attendance`)
                 break;
                 default:  navigate(`/${propDpt}/${year}/checkattendance`)
             }

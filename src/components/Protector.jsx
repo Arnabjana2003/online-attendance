@@ -7,11 +7,11 @@ function Protector({children,authentication = true}) {
   const auth = useSelector(state=>state.auth)
     useEffect(()=>{
       if(authentication && !auth.status){
-        navigate("/login")
+        navigate("/home")
       }else if(!authentication && auth.status){
         navigate(`/${auth.authData.department}/dashboard`)
       }
-    },[auth])
+    })
     
   return (
     <div>{children}</div>
