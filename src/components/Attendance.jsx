@@ -94,23 +94,23 @@ function Attendance() {
       <Header/>
       {!loading?(
         <>
-        <ul role="list" className=" p-3 divide-y divide-red-200">
+        <ul role="list" className=" p-3 divide-y divide-red-200 text-white">
         {students &&
           students.map((student) => (
             <li key={student.roll} className="flex justify-evenly gap-x-6 py-5">
               <div className=" md:flex justify-between w-1/3">
                 <div className="flex min-w-0 gap-x-4">
                   <div className="min-w-0 flex-auto">
-                    <p className="text-sm font-semibold leading-6 text-gray-900">
+                    <p className="text-sm font-semibold leading-6 ">
                       {student.name}
                     </p>
-                    <p className="mt-1 truncate text-xs leading-5 text-gray-500">
+                    <p className="mt-1 truncate text-xs leading-5">
                       Mrc
                     </p>
                   </div>
                 </div>
                 <div className=" shrink-0 sm:flex sm:flex-col sm:items-end">
-                  <p className="text-sm leading-6 text-gray-900">
+                  <p className="text-sm leading-6">
                     {student.roll}
                   </p>
                 </div>

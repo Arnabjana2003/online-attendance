@@ -49,12 +49,13 @@ function Student({student, onEdit, onDelete }) {
     }
   }
   return (
-    <div className=" flex justify-evenly bg-gradient-to-tl to-blue-400 from-blue-800 p-2 rounded-md my-5">
+    <div className=" flex justify-evenly bg-gradient-to-tl to-blue-400 from-blue-800 px-2 py-3 rounded-md my-5">
       <ToastContainer />
       {showModal ? (
         <Modal>
+          <div className=" p-4 w-60 md:w-72">
           <p>Do you really want to {showModal}?</p>
-          <div>
+          <div className=" flex justify-between mt-4">
             <Button
               className=" bg-white hover:bg-slate-300 disabled:text-slate-400"
               label={"No"}
@@ -66,6 +67,7 @@ function Student({student, onEdit, onDelete }) {
               onClick={handleClick}
             />
           </div>
+          </div>
         </Modal>
       ) : null}
       <div className="sm:flex justify-between w-[85%]">
@@ -74,7 +76,7 @@ function Student({student, onEdit, onDelete }) {
           name="name"
           placeholder="student's name"
           value={studentData.name}
-          className={`font-medium ${
+          className={` max-md:my-1 font-medium ${
             !isEditable
               ? "bg-transparent"
               : "text-black rounded-md bg-slate-300"
@@ -90,7 +92,7 @@ function Student({student, onEdit, onDelete }) {
           name="roll"
           placeholder="roll number"
           value={studentData.roll}
-          className={`${
+          className={` max-md:my-1 ${
             !isEditable
               ? "bg-transparent"
               : "text-black rounded-md bg-slate-300"
@@ -106,7 +108,7 @@ function Student({student, onEdit, onDelete }) {
           name="registration"
           placeholder="registration number"
           value={studentData.registration}
-          className={`${
+          className={` max-md:my-1 ${
             !isEditable
               ? "bg-transparent"
               : "text-black rounded-md bg-slate-300"
