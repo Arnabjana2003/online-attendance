@@ -7,10 +7,17 @@ import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
-import {firstyear,secondyear,thirdyear,fourthyear,updateStudent,deleteStudent} from "../store/studentSlice"
+import {
+  firstyear,
+  secondyear,
+  thirdyear,
+  fourthyear,
+  updateStudent,
+  deleteStudent,
+} from "../store/studentSlice";
 
 function ManageStudents() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { department, year } = useParams();
   const [isSaving, setIsSaving] = useState(false);
   const [modal, setModal] = useState(false);
@@ -22,7 +29,7 @@ function ManageStudents() {
     registration: "",
   });
   const [editData, setEditData] = useState({});
-  const studentsList = useSelector(state=>state.student[year])
+  const studentsList = useSelector((state) => state.student[year]);
 
   const addStudent = (e) => {
     e.preventDefault();
@@ -33,16 +40,20 @@ function ManageStudents() {
         e.target.name.value = "";
         e.target.roll.value = "";
         e.target.registration.value = "";
-        const res = [{ id: dbData.id, ...studentData }, ...students]
-        switch(year){
-          case "firstyear": dispatch(firstyear(res))
-          break;
-          case "secondyear": dispatch(secondyear(res))
-          break;
-          case "thirdyear": dispatch(thirdyear(res))
-          break;
-          case "fourthyear": dispatch(fourthyear(res))
-          break;
+        const res = [{ id: dbData.id, ...studentData }, ...students];
+        switch (year) {
+          case "firstyear":
+            dispatch(firstyear(res));
+            break;
+          case "secondyear":
+            dispatch(secondyear(res));
+            break;
+          case "thirdyear":
+            dispatch(thirdyear(res));
+            break;
+          case "fourthyear":
+            dispatch(fourthyear(res));
+            break;
         }
         setStudents(res);
         toast(`${studentData.name} is successfully added`);
@@ -53,7 +64,7 @@ function ManageStudents() {
   const onEdit = async (id, data = {}) => {
     try {
       await services.updateStudents(department, year, id, data);
-      dispatch(updateStudent({year,id,data}))
+      dispatch(updateStudent({ year, id, data }));
       return true;
     } catch (error) {
       return false;
@@ -62,7 +73,7 @@ function ManageStudents() {
   const onDelete = async (id) => {
     try {
       await services.deleteStudent(department, year, id);
-      dispatch(deleteStudent({year,id}))
+      dispatch(deleteStudent({ year, id }));
       setStudents(students.filter((std) => std.id != id));
       toast("Deleted successfully");
       return true;
@@ -71,27 +82,34 @@ function ManageStudents() {
     }
   };
   useEffect(() => {
-    if(studentsList.length != 0){
-      setStudents(studentsList)
-    }else{
+    if (studentsList.length != 0) {
+      setStudents(studentsList);
+    } else {
       console.log("calling db");
-      services.getStudents(department, year).then((std) => {
-        let stdList = [];
-        std.forEach((student) => {
-          stdList.push({ id: student.id, ...student.data() });
-        });
-        switch(year){
-          case "firstyear": dispatch(firstyear(stdList))
-          break;
-          case "secondyear": dispatch(secondyear(stdList))
-          break;
-          case "thirdyear": dispatch(thirdyear(stdList))
-          break;
-          case "fourthyear": dispatch(fourthyear(stdList))
-          break;
-        }
-        setStudents(stdList);
-      });
+      services
+        .getStudents(department, year)
+        .then((std) => {
+          let stdList = [];
+          std.forEach((student) => {
+            stdList.push({ id: student.id, ...student.data() });
+          });
+          switch (year) {
+            case "firstyear":
+              dispatch(firstyear(stdList));
+              break;
+            case "secondyear":
+              dispatch(secondyear(stdList));
+              break;
+            case "thirdyear":
+              dispatch(thirdyear(stdList));
+              break;
+            case "fourthyear":
+              dispatch(fourthyear(stdList));
+              break;
+          }
+          setStudents(stdList);
+        })
+        .catch((err) => toast(err.message));
     }
   }, []);
   return (

@@ -39,8 +39,8 @@ function YearOptions({action,display,propDpt}) {
             <option value="computerscience">Coumputer Science</option>
             <option value="mathematics">Mathematics</option>
             <option value="physics">Physics</option>
-            <option value="physics">Physics</option>
-            <option value="physics">Physics</option>
+            <option value="geography">Geography</option>
+            <option value="english">English</option>
         </select>
         </>):null}
         <h4 className=' text-lg font-semibold text-white'>Choose the Year</h4>

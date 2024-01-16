@@ -16,6 +16,7 @@ function Signup() {
   const onCng = (event) => {
     setUserData({ ...userData, [event.name]: event.value });
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const btn = e.target.btn;
@@ -125,9 +126,10 @@ function Signup() {
               className=" font-bold text-xl md:text-2xl text-white"
             />
           </div>
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-yellow-200">
-            Signup
-          </h2>
+          <div className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-yellow-200">
+            <h2>Signup</h2>
+            <p className="opacity-60 text-base font-normal">or<br/>Existing member ? <span onClick={()=>navigate("/login")} className=" cursor-pointer font-bold">Login here</span></p>
+          </div>
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -163,6 +165,7 @@ function Signup() {
                   id="email"
                   name="email"
                   type="email"
+                  placeholder="email"
                   autoComplete="email"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2 "
@@ -211,7 +214,7 @@ function Signup() {
                 >
                   <option value="">Select</option>
                   <option value="bca">BCA</option>
-                  <option value="math">MATH</option>
+                  <option value="mathematics">MATH</option>
                   <option value="geography">GEOGRAPHY</option>
                 </select>
               </div>
@@ -240,12 +243,12 @@ function Signup() {
               </div>
             </div>
             <div>
-              <Button type={"submit"} label={"Signup"} className="w-full" />
+              <Button type={"submit"} label={"Signup"} className="w-full bg-yellow-500 hover:bg-yellow-400 disabled:bg-yellow-200 disabled:text-slate-400" />
             </div>
           </form>
         </div>
+        <p className=" text-center text-white">Exsiting member ? <span onClick={()=>navigate("/login")} className=" cursor-pointer font-bold">Login here</span></p>
       </div>
-      <button onClick={handleSubmit}>click</button>
     </>
   );
 }

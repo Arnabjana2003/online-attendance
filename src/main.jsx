@@ -19,7 +19,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
     children: [
-      { path: "/", element:<Protector authentication={false}><Login/></Protector> },
+      { path: "/", element:<Protector authentication={false}><Home/></Protector> },
       {
         path: "/:department/:year/checkattendance",
         element: <CheckAttendance />,
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/:department/:year/attendance",
-        element: <Protector authentication={false}><Attendance/></Protector>,
+        element: <Protector authentication={true}><Attendance/></Protector>,
       },
       {
         path: "/:department/dashboard",

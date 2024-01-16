@@ -57,9 +57,10 @@ function Login() {
               className=" font-bold text-xl md:text-2xl text-white"
             />
           </div>
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-yellow-200">
-            Login to your account
-          </h2>
+          <div className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-yellow-200">
+            <h2>Login to your account</h2>
+            <p className="  opacity-60 text-base font-normal">or<br/>Existing member ? <span onClick={()=>navigate("/signup")} className=" cursor-pointer font-bold">Login here</span></p>
+          </div>
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -110,10 +111,11 @@ function Login() {
             </div>
 
             <div>
-              <Button type={"submit"} label={"Log in"} className="w-full" />
+              <Button type={"submit"} label={"Log in"} className="w-full bg-yellow-500 hover:bg-yellow-400 disabled:bg-yellow-200 disabled:text-slate-400" />
             </div>
           </form>
         </div>
+        <p className=" text-center text-base font-normal">Existing member ? <span onClick={()=>navigate("/signup")} className=" cursor-pointer font-bold">Login here</span></p>
       </div>
     </>
   );
