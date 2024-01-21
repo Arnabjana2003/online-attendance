@@ -59,7 +59,7 @@ function Login() {
           </div>
           <div className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-yellow-200">
             <h2>Login to your account</h2>
-            <p className="  opacity-60 text-base font-normal">or<br/>Existing member ? <span onClick={()=>navigate("/signup")} className=" cursor-pointer font-bold">Login here</span></p>
+            <p className="  opacity-60 text-base font-normal">or<br/>New member ? <span onClick={()=>navigate("/signup")} className=" cursor-pointer font-bold">Register here</span></p>
           </div>
         </div>
 
@@ -115,7 +115,7 @@ function Login() {
             </div>
           </form>
         </div>
-        <p className=" text-center text-base font-normal">Existing member ? <span onClick={()=>navigate("/signup")} className=" cursor-pointer font-bold">Login here</span></p>
+        <p className=" text-center text-base font-normal">New member ? <span onClick={()=>navigate("/signup")} className=" cursor-pointer font-bold">Register here</span></p>
       </div>
     </>
   );

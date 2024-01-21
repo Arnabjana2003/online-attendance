@@ -30,14 +30,17 @@ function Signup() {
     services
       .search([userData.department], ["departmentcode", "!=", "null"])
       .then((dptcode) => {
-        let dptCode = null;
-        if (dptcode._snapshot.docChanges.length != 0) {
-          dptcode.forEach((code) => {
-            dptCode = code.data().departmentcode;
-          });
-          console.log(dptCode);
+        // let dptCode = null;
+        // if (dptcode._snapshot.docChanges.length != 0) {
+        //   dptcode.forEach((code) => {
+        //     dptCode = code.data().departmentcode;
+        //   });
+        //   console.log(dptCode);
 
-          if (userData.departmentcode === dptCode) {
+        //          } 
+        dptcode.forEach(code=>{
+          const departmentCode = code.data().departmentcode
+          if (userData.departmentcode === departmentCode) {
             authServices
               .signup(userData.email, userData.passcode)
               .then((data) => {
@@ -80,50 +83,8 @@ function Signup() {
           } else {
             toast("Dopartment code is wrong. Enter the correct code");
           }
-        } else {
-          authServices
-            .signup(userData.email, userData.passcode)
-            .then((data) => {
-              services.addDocument([userData.department], {
-                departmentcode: userData.departmentcode,
-              });
-              services
-                .addMember({
-                  uid: data.user.uid,
-                  name: userData.name,
-                  department: userData.department,
-                  email: userData.email,
-                })
-                .then(() => {
-                  dispatch(
-                    login({
-                      uid: data.user.uid,
-                      name: userData.name,
-                      department: userData.department,
-                      email: userData.email,
-                    })
-                  );
-                  toast("Registration succefull");
-                  name.value = "";
-                  email.value = "";
-                  password.value = "";
-                  department.value = "";
-                })
-                .catch((err) => {
-                  authServices
-                    .deleteUser(data.user.uid)
-                    .then(() => console.log("user deleted"))
-                    .catch((err) => console.log("user deletion err: "), err);
-                });
-            })
-            .catch((err) => {
-              toast(err.message);
-            })
-            .finally(() => {
-              btn.disabled = false;
-              btn.innerText = "Signup";
-            });
-        }
+
+        })
       })
       .catch((err) => toast(err.message))
       .finally(() => {
@@ -147,7 +108,7 @@ function Signup() {
             <p className="opacity-60 text-base font-normal">
               or
               <br />
-              New member ?{" "}
+              Existing member ?
               <span
                 onClick={() => navigate("/login")}
                 className=" cursor-pointer font-bold"
@@ -281,7 +242,7 @@ function Signup() {
           </form>
         </div>
         <p className=" text-center text-white">
-          New member ?{" "}
+          Existing member ?{" "}
           <span
             onClick={() => navigate("/login")}
             className=" cursor-pointer font-bold"

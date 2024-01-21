@@ -6,14 +6,15 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loading from "./Loading";
 import Header from "./Header";
+import SearchBar from "./SearchBar";
 
 function CheckAttendance() {
   const dispatch = useDispatch()
   const { department, year } = useParams();
   const [list, setList] = useState([]);
   const [students, setStudents] = useState([]);
-  const [loading, setLoading] = useState(true);
-
+  const [loading, setLoading] = useState(false);
+  const [searchBarData,setSearchBarData] = useState([])
   useEffect(() => {
       console.log("calling db");
       services
@@ -23,6 +24,7 @@ function CheckAttendance() {
           std.forEach((student) => {
             stdList.push({ id: student.id, ...student.data() });
           });
+          setSearchBarData(stdList)
           setStudents(stdList);
         })
         .catch((err) => toast(err.message))
@@ -47,6 +49,9 @@ function CheckAttendance() {
     <>
       <ToastContainer />
       <Header/>
+      <div className=" flex justify-end pr-3 mt-2">
+      <SearchBar data={searchBarData} setData={setStudents}/>
+      </div>
       {!loading?(
         <>
         <ul role="list" className=" p-3 divide-y divide-red-200 text-white">

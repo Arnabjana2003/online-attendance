@@ -15,6 +15,7 @@ import {
   updateStudent,
   deleteStudent,
 } from "../store/studentSlice";
+import SearchBar from "./SearchBar";
 
 function ManageStudents() {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ function ManageStudents() {
   const [isSaving, setIsSaving] = useState(false);
   const [modal, setModal] = useState(false);
   const [students, setStudents] = useState([]);
-  const [isEditable, setIsEditable] = useState(false);
+  const [searchBarData, setSearchBarData] = useState([]);
   const [studentData, setStudentData] = useState({
     name: "",
     roll: "",
@@ -56,6 +57,7 @@ function ManageStudents() {
             break;
         }
         setStudents(res);
+        setSearchBarData(res)
         toast(`${studentData.name} is successfully added`);
       })
       .catch((err) => toast(err.message))
@@ -65,8 +67,15 @@ function ManageStudents() {
     try {
       await services.updateStudents(department, year, id, data);
       dispatch(updateStudent({ year, id, data }));
-      return true;
+      for(let i=0; i<students.length; i++){
+        let datas = [...students];
+          datas[i] = data
+          setStudents(datas)
+          setSearchBarData(datas)
+          return true;
+      }
     } catch (error) {
+      console.log(error.message);
       return false;
     }
   };
@@ -75,6 +84,7 @@ function ManageStudents() {
       await services.deleteStudent(department, year, id);
       dispatch(deleteStudent({ year, id }));
       setStudents(students.filter((std) => std.id != id));
+      setSearchBarData(students.filter((std) => std.id != id));
       toast("Deleted successfully");
       return true;
     } catch (error) {
@@ -84,6 +94,7 @@ function ManageStudents() {
   useEffect(() => {
     if (studentsList.length != 0) {
       setStudents(studentsList);
+      setSearchBarData(studentsList)
     } else {
       console.log("calling db");
       services
@@ -108,6 +119,7 @@ function ManageStudents() {
               break;
           }
           setStudents(stdList);
+          setSearchBarData(stdList)
         })
         .catch((err) => toast(err.message));
     }
@@ -203,6 +215,9 @@ function ManageStudents() {
       ) : null}
 
       <main className=" mt-5">
+      <div className=" flex justify-end pr-3 mt-2">
+      <SearchBar data={searchBarData} setData={setStudents}/>
+      </div>
         {students.map((student) => (
           <Student
             key={student.id}
